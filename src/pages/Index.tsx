@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/hfs-academy-logo.png.asset.json';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -49,7 +49,7 @@ const Index = () => {
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="HFS Connect" className="h-8 w-8 rounded-lg" />
+            <img src={logo.url} alt="HFS Connect — HFS Academy logo" className="h-8 w-8 object-contain shrink-0" />
             <span className="font-bold tracking-tight">HFS Connect</span>
           </Link>
           <Button size="sm" variant="ghost" asChild>
