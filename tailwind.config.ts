@@ -14,6 +14,11 @@ export default {
     },
     extend: {
       colors: {
+        brand: { DEFAULT: "hsl(var(--brand))", foreground: "hsl(var(--brand-foreground))" },
+        gold: { DEFAULT: "hsl(var(--gold))", foreground: "hsl(var(--gold-foreground))", hover: "hsl(var(--gold-hover))" },
+        success: { DEFAULT: "hsl(var(--success))", foreground: "hsl(var(--success-foreground))" },
+        warning: { DEFAULT: "hsl(var(--warning))", foreground: "hsl(var(--warning-foreground))" },
+        overlay: "hsl(var(--overlay))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -57,6 +62,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      boxShadow: {
+        sm: "var(--shadow-soft)",
+        lg: "var(--shadow-elevated)",
+        "2xl": "var(--shadow-elevated)",
       },
       borderRadius: {
         lg: "var(--radius)",
