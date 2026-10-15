@@ -128,7 +128,7 @@ const Index = () => {
 
       <footer className="border-t">
         <div className="max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-muted-foreground">
-          <span>© 2026 Academy Starter</span>
+          <span>© 2026 HFS Connect</span>
           <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">Feedback</a>
         </div>
       </footer>
