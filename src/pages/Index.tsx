@@ -49,8 +49,8 @@ const Index = () => {
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="Academy Starter" className="h-8 w-8 rounded-lg" />
-            <span className="font-bold tracking-tight">Academy Starter</span>
+            <img src={logo} alt="HFS Connect" className="h-8 w-8 rounded-lg" />
+            <span className="font-bold tracking-tight">HFS Connect</span>
           </Link>
           <Button size="sm" variant="ghost" asChild>
             <Link to="/login"><LogIn className="h-4 w-4 mr-1.5" />Login</Link>
@@ -128,7 +128,7 @@ const Index = () => {
 
       <footer className="border-t">
         <div className="max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-muted-foreground">
-          <span>© 2026 Academy Starter</span>
+          <span>© 2026 HFS Connect</span>
           <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">Feedback</a>
         </div>
       </footer>

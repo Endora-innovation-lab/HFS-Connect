@@ -23,8 +23,8 @@ export default defineConfig(({ mode }) => ({
       devOptions: { enabled: false },
       includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifest: {
-        name: "Academy Starter",
-        short_name: "Academy",
+        name: "HFS Connect",
+        short_name: "HFS Connect",
         description: "Attendance, fees and batches for academies.",
         start_url: "/login",
         scope: "/",

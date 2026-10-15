@@ -126,7 +126,7 @@ const Login = () => {
       <main className="flex-1 flex items-center justify-center px-4 pb-12">
         <div className="w-full max-w-md rounded-2xl bg-card shadow-2xl overflow-hidden">
           <div className="p-6 pb-4 text-center">
-            <img src={logo} alt="Academy Starter" className="h-12 w-12 rounded-lg mx-auto mb-3" />
+            <img src={logo} alt="HFS Connect" className="h-12 w-12 rounded-lg mx-auto mb-3" />
             <h1 className="text-2xl font-bold">Login</h1>
             <p className="text-sm text-muted-foreground">Select your role and enter credentials</p>
           </div>
