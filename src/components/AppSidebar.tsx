@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import dashboardLogo from '@/assets/logo-transparent.png';
+import dashboardLogo from '@/assets/hfs-academy-logo.png.asset.json';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 
@@ -55,7 +55,7 @@ export function AppSidebar({
     <Sidebar collapsible="offcanvas">
       <SidebarHeader className="border-b">
         <div className="flex items-center gap-3 px-2 py-3">
-          <img src={dashboardLogo} alt="Logo" className="h-9 w-9 rounded" />
+          <img src={dashboardLogo.url} alt="HFS Connect — HFS Academy logo" className="h-9 w-9 object-contain shrink-0" />
           <div className="min-w-0">
             <div className="font-bold text-sm truncate">{title}</div>
             {instituteCode && (
