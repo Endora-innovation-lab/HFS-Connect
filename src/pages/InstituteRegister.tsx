@@ -81,8 +81,8 @@ const InstituteRegister = () => {
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
-              <GraduationCap className="h-7 w-7 text-accent" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-success/10">
+              <GraduationCap className="h-7 w-7 text-success" />
             </div>
             <CardTitle className="text-2xl">Registration Successful!</CardTitle>
             <CardDescription>Save your Institute ID</CardDescription>
