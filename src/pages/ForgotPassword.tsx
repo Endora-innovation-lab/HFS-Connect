@@ -72,7 +72,7 @@ const ForgotPassword = () => {
         <CardContent>
           {done ? (
             <div className="text-center space-y-4">
-              <p className="text-accent font-medium">Password reset successfully!</p>
+              <p className="text-success font-medium">Password reset successfully!</p>
               <Link to="/dashboard/institute"><Button className="w-full">Back to Dashboard</Button></Link>
             </div>
           ) : (

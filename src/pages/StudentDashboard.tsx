@@ -139,8 +139,8 @@ const StudentAttendanceTab = ({ studentId }: { studentId: string }) => {
       </div>
       {totalCount > 0 && (
         <div className="flex flex-wrap gap-3 text-sm">
-          <span className="px-3 py-1 rounded bg-accent/10 text-accent font-medium">Present (P): {presentCount}</span>
-          <span className="px-3 py-1 rounded bg-yellow-500/10 text-yellow-700 dark:text-yellow-500 font-medium">Late (L): {lateCount}</span>
+          <span className="px-3 py-1 rounded bg-success/10 text-success font-medium">Present (P): {presentCount}</span>
+          <span className="px-3 py-1 rounded bg-warning/10 text-warning font-medium">Late (L): {lateCount}</span>
           <span className="px-3 py-1 rounded bg-destructive/10 text-destructive font-medium">Absent (A): {absentCount}</span>
           <span className="px-3 py-1 rounded bg-muted font-medium">Total: {totalCount}</span>
         </div>
@@ -164,9 +164,9 @@ const StudentAttendanceTab = ({ studentId }: { studentId: string }) => {
                 <td className="p-3">
                   <span className={`px-2 py-0.5 rounded text-xs font-bold inline-block w-8 text-center ${
                     a.status === 'present'
-                      ? 'bg-accent/10 text-accent'
+                      ? 'bg-success/10 text-success'
                       : a.status === 'late'
-                        ? 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-500'
+                        ? 'bg-warning/10 text-warning'
                         : 'bg-destructive/10 text-destructive'
                   }`}>{a.status === 'present' ? 'P' : a.status === 'late' ? 'L' : 'A'}</span>
                 </td>
@@ -225,8 +225,8 @@ const StudentFeesTab = ({ studentId }: { studentId: string }) => {
     return acc;
   }, { total: 0, paid: 0, due: 0 });
 
-  const statusCls = (s: string) => s === 'paid' ? 'bg-accent/10 text-accent'
-    : s === 'partial' ? 'bg-yellow-500/10 text-yellow-600'
+  const statusCls = (s: string) => s === 'paid' ? 'bg-success/10 text-success'
+    : s === 'partial' ? 'bg-warning/10 text-warning'
     : 'bg-destructive/10 text-destructive';
 
   return (
@@ -249,7 +249,7 @@ const StudentFeesTab = ({ studentId }: { studentId: string }) => {
         </div>
         <div className="rounded-lg border bg-card p-4">
           <p className="text-sm text-muted-foreground">Paid</p>
-          <p className="text-2xl font-bold text-accent">₹{totals.paid.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-success">₹{totals.paid.toLocaleString()}</p>
         </div>
         <div className="rounded-lg border bg-card p-4">
           <p className="text-sm text-muted-foreground">Due</p>
@@ -286,7 +286,7 @@ const StudentFeesTab = ({ studentId }: { studentId: string }) => {
                   <td className="p-3">₹{amt.toLocaleString()}</td>
                   <td className="p-3">
                     ₹{col.toLocaleString()}
-                    {excess > 0 && <span className="text-xs text-accent ml-1">(+₹{excess} excess)</span>}
+                    {excess > 0 && <span className="text-xs text-success ml-1">(+₹{excess} excess)</span>}
                   </td>
                   <td className="p-3 font-medium">₹{due.toLocaleString()}</td>
                   <td className="p-3">

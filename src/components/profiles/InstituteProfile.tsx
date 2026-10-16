@@ -214,7 +214,7 @@ export default function InstituteProfile({ instituteId }: Props) {
             <CardHeader><CardTitle>Subscription Plan</CardTitle></CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-3">
-                <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0">
+                <Badge className="bg-gold text-gold-foreground border-0">
                   {(data.subscription_plan || 'beta').toUpperCase()}
                 </Badge>
                 <Button variant="outline" size="sm" onClick={() => setShowBeta(true)}>View details</Button>

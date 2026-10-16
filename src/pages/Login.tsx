@@ -116,15 +116,15 @@ const Login = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(135deg, hsl(220, 100%, 55%), hsl(265, 85%, 55%))' }}>
+    <div className="min-h-screen flex flex-col bg-brand">
       <header className="px-4 py-4">
-        <Link to="/" className="inline-flex items-center gap-2 text-white/90 hover:text-white text-sm font-medium">
+        <Link to="/" className="inline-flex items-center gap-2 text-brand-foreground/90 hover:text-gold text-sm font-medium">
           <ArrowLeft className="h-4 w-4" /> Back to home
         </Link>
       </header>
 
       <main className="flex-1 flex items-center justify-center px-4 pb-12">
-        <div className="w-full max-w-md rounded-2xl bg-card shadow-2xl overflow-hidden">
+        <div className="w-full max-w-md rounded-2xl border border-gold/30 bg-card shadow-2xl overflow-hidden">
           <div className="p-6 pb-4 text-center">
             <img src={logo.url} alt="HFS Connect — HFS Academy logo" className="h-12 w-12 object-contain mx-auto mb-3" />
             <h1 className="text-2xl font-bold">Login</h1>
@@ -139,7 +139,7 @@ const Login = () => {
                 onClick={() => handleRoleChange(r.key)}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
                   activeRole === r.key
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-gold text-gold-foreground'
                     : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
               >

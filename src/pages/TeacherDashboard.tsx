@@ -87,7 +87,7 @@ const OverviewTab = ({ teacherId, instituteId }: { teacherId: string; instituteI
         .order('date', { ascending: true });
       const c = { present: 0, absent: 0, late: 0 };
       const batchMap: Record<string, string> = {};
-      const palette = ['hsl(217 91% 60%)', 'hsl(280 80% 60%)', 'hsl(160 70% 45%)', 'hsl(35 95% 55%)', 'hsl(0 80% 60%)', 'hsl(190 85% 50%)', 'hsl(320 75% 60%)', 'hsl(50 90% 50%)'];
+      const palette = Array.from({ length: 8 }, (_, i) => `hsl(var(--chart-${i + 1}))`);
       const dateMap: Record<string, any> = {};
       (data || []).forEach((r: any) => {
         if (r.status === 'present') c.present++;
@@ -122,11 +122,11 @@ const OverviewTab = ({ teacherId, instituteId }: { teacherId: string; instituteI
         </Card>
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Present</CardTitle></CardHeader>
-          <CardContent><div className="text-2xl font-bold text-accent">{counts.present}</div></CardContent>
+          <CardContent><div className="text-2xl font-bold text-success">{counts.present}</div></CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Late</CardTitle></CardHeader>
-          <CardContent><div className="text-2xl font-bold text-yellow-500">{counts.late}</div></CardContent>
+          <CardContent><div className="text-2xl font-bold text-warning">{counts.late}</div></CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Absent</CardTitle></CardHeader>
@@ -186,9 +186,9 @@ const StatusBadge = ({ status, onClick }: { status: string; onClick?: () => void
   const label = status === 'present' ? 'P' : status === 'late' ? 'L' : status === 'absent' ? 'A' : '—';
   const cls =
     status === 'present'
-      ? 'bg-accent text-accent-foreground'
+      ? 'bg-success text-success-foreground'
       : status === 'late'
-        ? 'bg-yellow-500 text-white'
+        ? 'bg-warning text-warning-foreground'
         : status === 'absent'
           ? 'bg-destructive text-destructive-foreground'
           : 'bg-muted text-muted-foreground';
@@ -866,8 +866,8 @@ const UpdateFeesTab = ({ teacherId, instituteId, userId }: { teacherId: string; 
     collected: (r: any) => Number(r.collected) || 0,
   });
 
-  const statusClass = (s: string) => s === 'paid' ? 'bg-accent/10 text-accent'
-    : s === 'partial' ? 'bg-yellow-500/10 text-yellow-600'
+  const statusClass = (s: string) => s === 'paid' ? 'bg-success/10 text-success'
+    : s === 'partial' ? 'bg-warning/10 text-warning'
     : 'bg-destructive/10 text-destructive';
 
   const dirtyCount = Object.values(dirty).filter(Boolean).length;
@@ -919,7 +919,7 @@ const UpdateFeesTab = ({ teacherId, instituteId, userId }: { teacherId: string; 
                   const excess = Math.max(0, col - amt);
                   const st = col === 0 ? 'unpaid' : col >= amt ? 'paid' : 'partial';
                   return (
-                    <tr key={r.student_id} className={`border-t ${dirty[r.student_id] ? 'bg-yellow-50/40' : ''}`}>
+                    <tr key={r.student_id} className={`border-t ${dirty[r.student_id] ? 'bg-warning/5' : ''}`}>
                       <td className="p-3">{index + 1}</td>
                       <td className="p-3">{r.name}</td>
                       <td className="p-3">{r.reg_no}</td>
@@ -928,7 +928,7 @@ const UpdateFeesTab = ({ teacherId, instituteId, userId }: { teacherId: string; 
                         <Input type="number" min="0" className="w-24" value={r.collected}
                           onChange={e => updateRow(r.student_id, { collected: Number(e.target.value) || 0 })}
                           placeholder="0" />
-                        {excess > 0 && <p className="text-xs text-accent mt-1">+₹{excess} excess</p>}
+                        {excess > 0 && <p className="text-xs text-success mt-1">+₹{excess} excess</p>}
                       </td>
                       <td className="p-3 font-medium">₹{due.toLocaleString()}</td>
                       <td className="p-3">
