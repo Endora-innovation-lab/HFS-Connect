@@ -206,12 +206,12 @@ const OverviewTab = ({ instituteId, principalTeacherId }: { instituteId: string;
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           <Stat label="Total Students" value={stats.students} />
-          <Stat label="Present" value={stats.presentStudents} color="text-accent" />
+          <Stat label="Present" value={stats.presentStudents} color="text-success" />
           <Stat label="Absent" value={stats.absentStudents} color="text-destructive" />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
           <Stat label="Total Teachers" value={stats.teachers} />
-          <Stat label="Teachers Present" value={stats.presentTeachers} color="text-accent" />
+          <Stat label="Teachers Present" value={stats.presentTeachers} color="text-success" />
           <Stat label="Teachers Absent" value={stats.absentTeachers} color="text-destructive" />
         </div>
       </div>
@@ -219,8 +219,8 @@ const OverviewTab = ({ instituteId, principalTeacherId }: { instituteId: string;
       <div>
         <h3 className="text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide">Fees (This Month)</h3>
         <div className="grid grid-cols-3 gap-3">
-          <Stat label="Paid" value={stats.paidFees} color="text-accent" />
-          <Stat label="Partial" value={stats.partialFees} color="text-yellow-600" />
+          <Stat label="Paid" value={stats.paidFees} color="text-success" />
+          <Stat label="Partial" value={stats.partialFees} color="text-warning" />
           <Stat label="Unpaid" value={stats.unpaidFees} color="text-destructive" />
         </div>
       </div>
@@ -511,8 +511,8 @@ const cycleStatus = (s: string): string => {
 const StatusBadge = ({ status, onClick }: { status: string; onClick?: () => void }) => {
   const label = status === 'present' ? 'P' : status === 'late' ? 'L' : status === 'absent' ? 'A' : '—';
   const cls =
-    status === 'present' ? 'bg-accent text-accent-foreground'
-    : status === 'late' ? 'bg-yellow-500 text-white'
+    status === 'present' ? 'bg-success text-success-foreground'
+    : status === 'late' ? 'bg-warning text-warning-foreground'
     : status === 'absent' ? 'bg-destructive text-destructive-foreground'
     : 'bg-muted text-muted-foreground';
   if (onClick) {
@@ -528,7 +528,7 @@ const StatusBadge = ({ status, onClick }: { status: string; onClick?: () => void
 const SummaryCards = ({ total, present, absent, label }: { total: number; present: number; absent: number; label: string }) => (
   <div className="grid grid-cols-3 gap-3">
     <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Total {label}</CardTitle></CardHeader><CardContent><div className="text-xl font-bold">{total}</div></CardContent></Card>
-    <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Present</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-accent">{present}</div></CardContent></Card>
+    <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Present</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-success">{present}</div></CardContent></Card>
     <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Absent</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-destructive">{absent}</div></CardContent></Card>
   </div>
 );
@@ -1182,8 +1182,8 @@ const FeesTab = ({ instituteId, userId }: { instituteId: string; userId: string 
     };
   }, { paid: 0, partial: 0, unpaid: 0, collected: 0 });
 
-  const statusCls = (s: string) => s === 'paid' ? 'bg-accent/10 text-accent'
-    : s === 'partial' ? 'bg-yellow-500/10 text-yellow-600' : 'bg-destructive/10 text-destructive';
+  const statusCls = (s: string) => s === 'paid' ? 'bg-success/10 text-success'
+    : s === 'partial' ? 'bg-warning/10 text-warning' : 'bg-destructive/10 text-destructive';
 
   const updateRow = (key: string, patch: Partial<any>) => {
     setRows(prev => prev.map(r => r.key === key ? { ...r, ...patch } : r));
@@ -1327,8 +1327,8 @@ const FeesTab = ({ instituteId, userId }: { instituteId: string; userId: string 
       ) : (
       <>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Paid</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-accent">{totals.paid}</div></CardContent></Card>
-        <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Partial</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-yellow-600">{totals.partial}</div></CardContent></Card>
+        <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Paid</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-success">{totals.paid}</div></CardContent></Card>
+        <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Partial</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-warning">{totals.partial}</div></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Unpaid</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-destructive">{totals.unpaid}</div></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Collected</CardTitle></CardHeader><CardContent><div className="text-xl font-bold">₹{totals.collected.toLocaleString()}</div></CardContent></Card>
       </div>
@@ -1366,7 +1366,7 @@ const FeesTab = ({ instituteId, userId }: { instituteId: string; userId: string 
               const excess = Math.max(0, col - amt);
               const st = rowStatus(r);
               return (
-                <tr key={r.key} className={`border-t ${dirty[r.key] ? 'bg-yellow-50/40' : ''}`}>
+                <tr key={r.key} className={`border-t ${dirty[r.key] ? 'bg-warning/5' : ''}`}>
                   <td className="p-3">{i + 1}</td>
                   <td className="p-3">{r.name}</td>
                   <td className="p-3">{r.reg_no || '—'}</td>
@@ -1377,7 +1377,7 @@ const FeesTab = ({ instituteId, userId }: { instituteId: string; userId: string 
                       <>
                         <Input type="number" min="0" className="w-24 h-8" value={r.collected}
                           onChange={e => updateRow(r.key, { collected: Number(e.target.value) || 0 })} />
-                        {excess > 0 && <p className="text-xs text-accent mt-1">+₹{excess} excess</p>}
+                        {excess > 0 && <p className="text-xs text-success mt-1">+₹{excess} excess</p>}
                       </>
                     ) : `₹${col.toLocaleString()}`}
                   </td>

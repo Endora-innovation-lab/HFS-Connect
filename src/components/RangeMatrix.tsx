@@ -46,9 +46,9 @@ const monthHeader = (m: string) => {
 
 const statusCls = (s: string) =>
   s === 'present'
-    ? 'bg-accent/10 text-accent'
+    ? 'bg-success/10 text-success'
     : s === 'late'
-      ? 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-500'
+      ? 'bg-warning/10 text-warning'
       : 'bg-destructive/10 text-destructive';
 
 const stickySno = 'sticky left-0 z-20 bg-card';
@@ -350,8 +350,8 @@ export const FeesRangeTable = ({
     return () => { cancelled = true; };
   }, [instituteId, gameId, from, to]);
 
-  const feeCls = (s: string) => s === 'paid' ? 'bg-accent/10 text-accent'
-    : s === 'partial' ? 'bg-yellow-500/10 text-yellow-600'
+  const feeCls = (s: string) => s === 'paid' ? 'bg-success/10 text-success'
+    : s === 'partial' ? 'bg-warning/10 text-warning'
     : 'bg-destructive/10 text-destructive';
 
   return (

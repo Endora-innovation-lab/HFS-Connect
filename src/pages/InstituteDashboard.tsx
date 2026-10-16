@@ -311,14 +311,14 @@ const OverviewTab = ({ instituteId }: { instituteId: string }) => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <Stat label="Total Students" value={stats.students} />
-          <Stat label="Present" value={stats.present} color="text-accent" />
-          <Stat label="Late" value={stats.late} color="text-yellow-600" />
+          <Stat label="Present" value={stats.present} color="text-success" />
+          <Stat label="Late" value={stats.late} color="text-warning" />
           <Stat label="Absent" value={stats.absent} color="text-destructive" />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
           <Stat label="Total Teachers" value={stats.teacherTotal} />
-          <Stat label="Teachers Present" value={stats.teacherPresent} color="text-accent" />
-          <Stat label="Teachers Late" value={stats.teacherLate} color="text-yellow-600" />
+          <Stat label="Teachers Present" value={stats.teacherPresent} color="text-success" />
+          <Stat label="Teachers Late" value={stats.teacherLate} color="text-warning" />
           <Stat label="Teachers Absent" value={stats.teacherAbsent} color="text-destructive" />
         </div>
       </div>
@@ -326,10 +326,10 @@ const OverviewTab = ({ instituteId }: { instituteId: string }) => {
       <div>
         <h3 className="text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide">Fees</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-          <Stat label="Paid" value={stats.paid} color="text-accent" />
-          <Stat label="Partial" value={stats.partial} color="text-yellow-600" />
+          <Stat label="Paid" value={stats.paid} color="text-success" />
+          <Stat label="Partial" value={stats.partial} color="text-warning" />
           <Stat label="Unpaid" value={stats.unpaid} color="text-destructive" />
-          <Stat label="Total Collected" value={`₹${stats.totalCollected.toLocaleString()}`} color="text-accent" />
+          <Stat label="Total Collected" value={`₹${stats.totalCollected.toLocaleString()}`} color="text-success" />
           <Stat label="Total Pending" value={`₹${stats.totalPending.toLocaleString()}`} color="text-destructive" />
         </div>
       </div>
@@ -701,9 +701,9 @@ const StudentsTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatc
       </div>
 
       {createdCreds && (
-        <Card className="border-accent bg-accent/5">
+        <Card className="border-success/30 bg-success/5">
           <CardContent className="pt-4">
-            <p className="font-semibold text-accent">Login Credentials Created:</p>
+            <p className="font-semibold text-success">Login Credentials Created:</p>
             <p className="text-sm">Username: <strong>{createdCreds.username}</strong></p>
             <p className="text-sm">Password: <strong>{createdCreds.password}</strong></p>
             <Button size="sm" variant="outline" className="mt-2" onClick={() => setCreatedCreds(null)}>Dismiss</Button>
@@ -740,7 +740,7 @@ const StudentsTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatc
                       sgs.map(sg => {
                         const g = games.find(g => g.id === sg.game_id);
                         return (
-                          <span key={sg.id} className={`inline-block mr-1 mb-1 px-2 py-0.5 rounded ${sg.status === 'active' ? 'bg-accent/10 text-accent' : 'bg-muted text-muted-foreground'}`}>
+                          <span key={sg.id} className={`inline-block mr-1 mb-1 px-2 py-0.5 rounded ${sg.status === 'active' ? 'bg-success/10 text-success' : 'bg-muted text-muted-foreground'}`}>
                             {g?.name || '?'}
                           </span>
                         );
@@ -749,7 +749,7 @@ const StudentsTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatc
                   <td className="p-3">
                     <button
                       onClick={() => toggleStatus(s)}
-                      className={`px-2 py-0.5 rounded text-xs font-medium ${s.status === 'inactive' ? 'bg-destructive/10 text-destructive' : 'bg-accent/10 text-accent'}`}
+                      className={`px-2 py-0.5 rounded text-xs font-medium ${s.status === 'inactive' ? 'bg-destructive/10 text-destructive' : 'bg-success/10 text-success'}`}
                     >
                       {s.status === 'inactive' ? 'Inactive' : 'Active'}
                     </button>
@@ -1154,9 +1154,9 @@ const TeachersTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatc
       </div>
 
       {createdCreds && (
-        <Card className="border-accent bg-accent/5">
+        <Card className="border-success/30 bg-success/5">
           <CardContent className="pt-4">
-            <p className="font-semibold text-accent">Login Credentials Created:</p>
+            <p className="font-semibold text-success">Login Credentials Created:</p>
             <p className="text-sm">Email: <strong>{createdCreds.email}</strong></p>
             <p className="text-sm">Password: <strong>{createdCreds.password}</strong></p>
             <Button size="sm" variant="outline" className="mt-2" onClick={() => setCreatedCreds(null)}>Dismiss</Button>
@@ -1749,7 +1749,7 @@ const BatchesTab = ({ instituteId }: { instituteId: string }) => {
             <div className="space-y-4 overflow-y-auto pr-1 min-h-0">
               {/* Assigned Teacher Card */}
               <div className="bg-card rounded-xl border shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-b from-primary/10 to-primary/5 p-5 flex flex-col items-center text-center">
+                <div className="bg-accent p-5 flex flex-col items-center text-center">
                   <div className="w-16 h-16 rounded-full bg-primary/15 flex items-center justify-center mb-3">
                     <Users className="h-7 w-7 text-primary" />
                   </div>
@@ -1887,7 +1887,7 @@ const BatchesTab = ({ instituteId }: { instituteId: string }) => {
                         className={`w-full text-left px-3 py-2 text-sm hover:bg-muted flex items-center justify-between ${already ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         <span><strong>{(s.profiles as any)?.name}</strong> <span className="text-muted-foreground">({s.reg_no})</span></span>
-                        {already && <span className="text-xs text-amber-600">in batch</span>}
+                        {already && <span className="text-xs text-warning">in batch</span>}
                       </button>
                     );
                   })}
@@ -2060,9 +2060,9 @@ const AttendanceTab = ({ instituteId }: { instituteId: string }) => {
         <div className="flex flex-wrap items-center gap-3">
           <h2 className="text-xl font-bold flex items-center gap-2"><ClipboardList className="h-5 w-5" /> Attendance</h2>
           <div className="flex flex-wrap gap-2 rounded-lg border bg-card px-3 py-2">
-            <span className="rounded-md bg-green-100 dark:bg-green-950 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-300">Present: {counts.present}</span>
-            <span className="rounded-md bg-red-100 dark:bg-red-950 px-2 py-1 text-xs font-medium text-red-700 dark:text-red-300">Absent: {counts.absent}</span>
-            <span className="rounded-md bg-yellow-100 dark:bg-yellow-950 px-2 py-1 text-xs font-medium text-yellow-700 dark:text-yellow-300">Late: {counts.late}</span>
+            <span className="rounded-md bg-success/10 px-2 py-1 text-xs font-medium text-success">Present: {counts.present}</span>
+            <span className="rounded-md bg-destructive/10 px-2 py-1 text-xs font-medium text-destructive">Absent: {counts.absent}</span>
+            <span className="rounded-md bg-warning/10 px-2 py-1 text-xs font-medium text-warning">Late: {counts.late}</span>
             <span className="rounded-md bg-muted px-2 py-1 text-xs font-medium text-foreground">Total {filterRole === 'student' ? 'Students' : 'Teachers'}: {counts.total}</span>
           </div>
         </div>
@@ -2151,9 +2151,9 @@ const AttendanceTab = ({ instituteId }: { instituteId: string }) => {
                 <td className="p-3">
                   <span className={`px-2 py-0.5 rounded text-xs font-bold inline-block w-8 text-center ${
                     a.status === 'present'
-                      ? 'bg-accent/10 text-accent'
+                      ? 'bg-success/10 text-success'
                       : a.status === 'late'
-                        ? 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-500'
+                        ? 'bg-warning/10 text-warning'
                         : 'bg-destructive/10 text-destructive'
                   }`}>{a.status === 'present' ? 'P' : a.status === 'late' ? 'L' : 'A'}</span>
                 </td>
@@ -2586,7 +2586,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
       <>
       <div className="grid sm:grid-cols-3 gap-3">
         <Card><CardContent className="pt-4"><p className="text-sm text-muted-foreground">Total</p><p className="text-xl font-bold">₹{totalAmount.toLocaleString()}</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-sm text-muted-foreground">Collected</p><p className="text-xl font-bold text-accent">₹{paidAmount.toLocaleString()}</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-sm text-muted-foreground">Collected</p><p className="text-xl font-bold text-success">₹{paidAmount.toLocaleString()}</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-sm text-muted-foreground">Pending</p><p className="text-xl font-bold text-destructive">₹{unpaidAmount.toLocaleString()}</p></CardContent></Card>
       </div>
 
@@ -2614,8 +2614,8 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
               const col = Number(f.collected_amount) || 0;
               const due = Math.max(0, amt - col);
               const excess = Math.max(0, col - amt);
-              const cls = f.status === 'paid' ? 'bg-accent/10 text-accent'
-                : f.status === 'partial' ? 'bg-yellow-500/10 text-yellow-600'
+              const cls = f.status === 'paid' ? 'bg-success/10 text-success'
+                : f.status === 'partial' ? 'bg-warning/10 text-warning'
                 : 'bg-destructive/10 text-destructive';
               return (
                 <tr key={f.id} className="border-t">
@@ -2626,7 +2626,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
                   <td className="p-3">₹{amt.toLocaleString()}</td>
                   <td className="p-3">
                     ₹{col.toLocaleString()}
-                    {excess > 0 && <span className="text-xs text-accent ml-1">(+₹{excess})</span>}
+                    {excess > 0 && <span className="text-xs text-success ml-1">(+₹{excess})</span>}
                   </td>
                   <td className="p-3">₹{due.toLocaleString()}</td>
                   <td className="p-3">
