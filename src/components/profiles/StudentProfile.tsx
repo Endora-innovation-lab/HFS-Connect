@@ -79,7 +79,7 @@ export default function StudentProfile({ studentId }: Props) {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center text-xl font-bold">
+            <div className="h-16 w-16 rounded-full bg-brand text-gold border border-gold/30 flex items-center justify-center text-xl font-bold">
               {(name || '?').slice(0, 1).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
@@ -119,15 +119,15 @@ export default function StudentProfile({ studentId }: Props) {
           <CardHeader><CardTitle className="text-base flex items-center gap-2"><Wallet className="h-4 w-4" /> Fee Summary</CardTitle></CardHeader>
           <CardContent className="text-sm space-y-1">
             <div className="flex justify-between"><span className="text-muted-foreground">Total</span><span className="font-medium">₹{feeSummary.total.toLocaleString()}</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Paid</span><span className="font-medium text-green-600">₹{feeSummary.paid.toLocaleString()}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Paid</span><span className="font-medium text-success">₹{feeSummary.paid.toLocaleString()}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Due</span><span className="font-medium text-destructive">₹{feeSummary.due.toLocaleString()}</span></div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader><CardTitle className="text-base flex items-center gap-2"><CalendarCheck className="h-4 w-4" /> Attendance</CardTitle></CardHeader>
           <CardContent className="text-sm space-y-1">
-            <div className="flex justify-between"><span className="text-muted-foreground">Present</span><span className="font-medium text-green-600">{attSummary.present}</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Late</span><span className="font-medium text-amber-600">{attSummary.late}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Present</span><span className="font-medium text-success">{attSummary.present}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Late</span><span className="font-medium text-warning">{attSummary.late}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Absent</span><span className="font-medium text-destructive">{attSummary.absent}</span></div>
           </CardContent>
         </Card>

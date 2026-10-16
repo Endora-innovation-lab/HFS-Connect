@@ -57,7 +57,7 @@ export default function TeacherProfile({ teacherId, hideAssignments }: Props) {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center text-xl font-bold">
+            <div className="h-16 w-16 rounded-full bg-brand text-gold border border-gold/30 flex items-center justify-center text-xl font-bold">
               {(name || '?').slice(0, 1).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">

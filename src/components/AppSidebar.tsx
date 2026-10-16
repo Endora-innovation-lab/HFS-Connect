@@ -59,7 +59,7 @@ export function AppSidebar({
           <div className="min-w-0">
             <div className="font-bold text-sm truncate">{title}</div>
             {instituteCode && (
-              <div className="text-[11px] text-muted-foreground truncate">
+              <div className="text-[11px] text-sidebar-foreground/70 truncate">
                 {instituteCode}
               </div>
             )}
@@ -81,7 +81,7 @@ export function AppSidebar({
                       onClick={() => handleSelect(item.value)}
                       className={
                         active
-                          ? 'bg-primary/10 text-primary font-medium hover:bg-primary/15'
+                          ? 'bg-sidebar-primary text-sidebar-primary-foreground font-medium hover:bg-sidebar-primary/90'
                           : ''
                       }
                     >
@@ -101,7 +101,7 @@ export function AppSidebar({
           <div className="px-2 py-2">
             <div className="text-sm font-medium truncate">{userLabel}</div>
             {userRoleLabel && (
-              <div className="text-xs text-muted-foreground">{userRoleLabel}</div>
+              <div className="text-xs text-sidebar-foreground/70">{userRoleLabel}</div>
             )}
           </div>
         )}

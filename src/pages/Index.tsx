@@ -46,13 +46,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b">
+      <header className="sticky top-0 z-50 bg-brand text-brand-foreground backdrop-blur border-b border-gold/30">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <img src={logo.url} alt="HFS Connect — HFS Academy logo" className="h-8 w-8 object-contain shrink-0" />
             <span className="font-bold tracking-tight">HFS Connect</span>
           </Link>
-          <Button size="sm" variant="ghost" asChild>
+          <Button size="sm" variant="ghost" className="text-brand-foreground hover:bg-gold hover:text-gold-foreground" asChild>
             <Link to="/login"><LogIn className="h-4 w-4 mr-1.5" />Login</Link>
           </Button>
         </div>
@@ -66,7 +66,7 @@ const Index = () => {
             </span>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] mb-4">
               Your academy,{' '}
-              <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(135deg, hsl(220,100%,55%), hsl(265,85%,55%))' }}>
+              <span className="text-primary">
                 in your pocket.
               </span>
             </h1>
@@ -77,8 +77,7 @@ const Index = () => {
               <Button
                 size="lg"
                 onClick={handleDownload}
-                className="h-12 px-7 text-base font-semibold text-primary-foreground shadow-lg border-0"
-                style={{ backgroundImage: 'linear-gradient(135deg, hsl(220,100%,55%), hsl(265,85%,55%))' }}
+                className="h-12 px-7 text-base font-semibold shadow-lg border-0"
               >
                 <Download className="h-5 w-5 mr-2" /> {installable ? 'Download App' : 'Open App'}
               </Button>
@@ -92,16 +91,16 @@ const Index = () => {
           {/* Phone mock */}
           <div className="flex justify-center">
             <div className="relative w-64 h-[30rem] rounded-[2.5rem] border-8 border-foreground/90 bg-card shadow-2xl overflow-hidden">
-              <div className="h-28 p-4 text-primary-foreground" style={{ backgroundImage: 'linear-gradient(135deg, hsl(220,100%,55%), hsl(265,85%,55%))' }}>
+              <div className="h-28 p-4 bg-brand text-brand-foreground">
                 <p className="text-xs opacity-80">Today</p>
                 <p className="text-lg font-bold">Silambam · Batch A</p>
-                <p className="text-xs mt-1" style={{ color: 'hsl(42,100%,65%)' }}>18 present · 2 late</p>
+                <p className="text-xs mt-1 text-gold">18 present · 2 late</p>
               </div>
               <div className="p-3 space-y-2">
                 {['Arun', 'Divya', 'Karthik', 'Meena', 'Rahul', 'Sneha'].map((n, i) => (
                   <div key={n} className="flex items-center justify-between rounded-xl border px-3 py-2">
                     <span className="text-sm font-medium">{n}</span>
-                    <span className={`text-xs font-bold rounded-md px-2 py-0.5 ${i === 2 ? 'bg-secondary text-secondary-foreground' : i === 4 ? 'bg-destructive/15 text-destructive' : 'bg-primary/10 text-primary'}`}>
+                    <span className={`text-xs font-bold rounded-md px-2 py-0.5 ${i === 2 ? 'bg-warning/10 text-warning' : i === 4 ? 'bg-destructive/15 text-destructive' : 'bg-success/10 text-success'}`}>
                       {i === 2 ? 'L' : i === 4 ? 'A' : 'P'}
                     </span>
                   </div>
