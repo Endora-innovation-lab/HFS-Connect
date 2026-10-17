@@ -135,7 +135,7 @@ const Index = () => {
               <img src={footerLogo.url} alt="HFS Connect logo" className="h-16 w-16 object-contain shrink-0" />
               <span>© 2026 HFS Connect</span>
             </div>
-            <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer" className="hover:text-gold">Feedback</a>
+            <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer" className="hover:text-gold">Report a Bug</a>
           </div>
         </div>
       </footer>
