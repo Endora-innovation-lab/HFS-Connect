@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Download, LogIn, CheckSquare, Wallet, Layers, ShieldCheck, Smartphone, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { canInstall, onInstallChange, promptInstall, isStandalone } from '@/lib/pwa';
+import { registrationWhatsAppUrl } from '@/lib/registrationContact';
 
 const features = [
   { icon: CheckSquare, title: 'Attendance', desc: 'Mark P / L / A in seconds, per batch.' },
@@ -132,7 +133,11 @@ const Index = () => {
             <img src={footerLogo.url} alt="HFS Connect logo" className="h-16 w-16 object-contain shrink-0" />
             <span>© 2026 HFS Connect</span>
           </div>
-          <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer" className="hover:text-gold">Feedback</a>
+          <div className="flex items-center gap-3">
+            <a href={registrationWhatsAppUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gold">New Academy? <span className="text-gold font-medium">Contact Us</span></a>
+            <span className="opacity-50">·</span>
+            <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer" className="hover:text-gold">Feedback</a>
+          </div>
         </div>
       </footer>
     </div>

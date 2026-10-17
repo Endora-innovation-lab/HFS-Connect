@@ -198,7 +198,7 @@ const Login = () => {
                 <Link to="/forgot-password" className="text-sm text-primary hover:underline block">
                   Forgot Password?
                 </Link>
-                <p className="hidden md:block text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   Don't have an account?{' '}
                   <a href={registrationWhatsAppUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
                     Register Institute
