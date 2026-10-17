@@ -128,14 +128,13 @@ const Index = () => {
       </main>
 
       <footer className="border-t border-gold/30 bg-brand text-brand-foreground">
-        <div className="max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
-          <div className="flex items-center gap-3">
-            <img src={footerLogo.url} alt="HFS Connect logo" className="h-16 w-16 object-contain shrink-0" />
-            <span>© 2026 HFS Connect</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <a href={registrationWhatsAppUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gold">New Academy? <span className="text-gold font-medium">Contact Us</span></a>
-            <span className="opacity-50">·</span>
+        <div className="max-w-5xl mx-auto px-4 pt-5 pb-6 flex flex-col items-center gap-3 text-sm">
+          <a href={registrationWhatsAppUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gold">New Academy? <span className="text-gold font-medium">Contact Us</span></a>
+          <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-3">
+              <img src={footerLogo.url} alt="HFS Connect logo" className="h-16 w-16 object-contain shrink-0" />
+              <span>© 2026 HFS Connect</span>
+            </div>
             <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer" className="hover:text-gold">Feedback</a>
           </div>
         </div>
