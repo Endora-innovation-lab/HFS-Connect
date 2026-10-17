@@ -83,7 +83,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <Button variant="outline" size="sm" asChild>
                   <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer">
                     <MessageSquare className="h-4 w-4 sm:mr-1" />
-                    <span className="hidden sm:inline">Feedback</span>
+                    <span className="hidden sm:inline">Report a Bug</span>
                   </a>
                 </Button>
                 {headerLogoutIcon && (
