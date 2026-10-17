@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from '@/assets/hfs-academy-logo.png.asset.json';
-import footerLogo from '@/assets/hfs-connect-logo-transparent.png.asset.json';
+import logo from '@/assets/hfs-logol.png';
+import footerLogo from '@/assets/hfs-logol-transparent.png';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';

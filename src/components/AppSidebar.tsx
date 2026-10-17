@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import dashboardLogo from '@/assets/hfs-academy-logo.png.asset.json';
+import dashboardLogo from '@/assets/hfs-logol.png';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 
