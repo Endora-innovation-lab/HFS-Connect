@@ -1,6 +1,6 @@
 # Theme update
 
-- [ ] Replace the main logo and app icons with the supplied outlined logo; add its transparent variant to the charcoal footer and verify rendering.
+- [x] Replace the main logo and app icons with the supplied outlined logo; transparent charcoal footer verified on desktop/mobile, login logo decoded, all five icons served correctly, no runtime errors.
 
 - [x] Apply shared black/gold theme and accessible semantic status colors.
 - [x] Replace remaining blue/purple branding without altering layouts or logic.
