@@ -55,7 +55,7 @@ export function AppSidebar({
     <Sidebar collapsible="offcanvas">
       <SidebarHeader className="border-b">
         <div className="flex items-center gap-3 px-2 py-3">
-          <img src={dashboardLogo.url} alt="HFS Connect logo" className="h-9 w-9 object-contain shrink-0" />
+          <img src={dashboardLogo} alt="HFS Connect logo" className="h-9 w-9 object-contain shrink-0" />
           <div className="min-w-0">
             <div className="font-bold text-sm truncate">{title}</div>
             {instituteCode && (
