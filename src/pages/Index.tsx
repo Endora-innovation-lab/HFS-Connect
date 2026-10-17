@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from '@/assets/hfs-academy-logo.png.asset.json';
-import footerLogo from '@/assets/hfs-connect-logo-transparent.png.asset.json';
+import logo from '@/assets/hfs-logol.png';
+import footerLogo from '@/assets/hfs-logol-transparent.png';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -51,7 +51,7 @@ const Index = () => {
       <header className="sticky top-0 z-50 bg-brand text-brand-foreground backdrop-blur border-b border-gold/30">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo.url} alt="HFS Connect logo" className="h-8 w-8 object-contain shrink-0" />
+            <img src={logo} alt="HFS Connect logo" className="h-8 w-8 object-contain shrink-0" />
             <span className="font-bold tracking-tight">HFS Connect</span>
           </Link>
           <Button size="sm" variant="ghost" className="text-brand-foreground hover:bg-gold hover:text-gold-foreground" asChild>
@@ -132,7 +132,7 @@ const Index = () => {
           <a href={registrationWhatsAppUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gold">New Academy? <span className="text-gold font-medium">Contact Us</span></a>
           <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-2">
             <div className="flex items-center gap-3">
-              <img src={footerLogo.url} alt="HFS Connect logo" className="h-16 w-16 object-contain shrink-0" />
+              <img src={footerLogo} alt="HFS Connect logo" className="h-16 w-16 object-contain shrink-0" />
               <span>© 2026 HFS Connect</span>
             </div>
             <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer" className="hover:text-gold">Report a Bug</a>
