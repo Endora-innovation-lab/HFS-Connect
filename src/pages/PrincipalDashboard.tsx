@@ -101,8 +101,8 @@ const OverviewTab = ({ instituteId, principalTeacherId }: { instituteId: string;
         teachersQ,
         supabase.from('batches').select('id', { count: 'exact', head: true }).eq('institute_id', instituteId),
         supabase.from('games').select('id', { count: 'exact', head: true }).eq('institute_id', instituteId),
-        supabase.from('attendance').select('status,student_id').eq('institute_id', instituteId).eq('date', date),
-        supabase.from('teacher_attendance').select('status,teacher_id').eq('institute_id', instituteId).eq('date', date),
+        supabase.from('attendance').select('status,student_id,batch_id').eq('institute_id', instituteId).eq('date', date),
+        supabase.from('teacher_attendance').select('status,teacher_id,batch_id').eq('institute_id', instituteId).eq('date', date),
         supabase.from('fees').select('status').eq('institute_id', instituteId).eq('month', month),
         supabase.from('attendance_sessions').select('id, batch_id').eq('institute_id', instituteId).eq('session_date', date),
       ]);
@@ -136,18 +136,23 @@ const OverviewTab = ({ instituteId, principalTeacherId }: { instituteId: string;
         absentStudents: absentStudentSet.size,
         presentTeachers: presentTSet.size,
         absentTeachers: absentTSet.size,
-        classesConducted: (sess.data || []).length,
+        classesConducted: 0,
         paidFees: paid,
         partialFees: partial,
         unpaidFees: unpaid,
       });
 
-      const sessBatchIds = Array.from(new Set((sess.data || []).map((r: any) => r.batch_id).filter(Boolean)));
+      const sessBatchIds = Array.from(new Set([
+        ...(sess.data || []).map((r: any) => r.batch_id),
+        ...(att.data || []).map((r: any) => r.batch_id),
+        ...(tatt.data || []).map((r: any) => r.batch_id),
+      ].filter(Boolean))) as string[];
+      setStats(prev => ({ ...prev, classesConducted: sessBatchIds.length }));
       if (sessBatchIds.length) {
         const { data: bNames } = await supabase.from('batches').select('id, name').in('id', sessBatchIds);
         const nameById: Record<string, string> = {};
         (bNames || []).forEach((b: any) => { nameById[b.id] = b.name; });
-        setClassList((sess.data || []).map((r: any) => ({ id: r.id, name: nameById[r.batch_id] || 'Batch' })));
+        setClassList(sessBatchIds.map(id => ({ id, name: nameById[id] || 'Batch' })));
       } else {
         setClassList([]);
       }
