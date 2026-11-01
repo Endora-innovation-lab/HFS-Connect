@@ -17,9 +17,11 @@ interface Props {
   /** Returns only the currently visible/filtered data, or null when nothing is exportable. */
   getData: () => ExportData | null;
   disabled?: boolean;
+  title?: string;
+  sheetName?: string;
 }
 
-export const AttendanceExportButton = ({ filename, getData, disabled }: Props) => {
+export const AttendanceExportButton = ({ filename, getData, disabled, title = 'Download Attendance', sheetName = 'Attendance' }: Props) => {
   const [open, setOpen] = useState(false);
   const [format, setFormat] = useState<'xlsx' | 'csv'>('xlsx');
   const [password, setPassword] = useState('');
@@ -48,7 +50,7 @@ export const AttendanceExportButton = ({ filename, getData, disabled }: Props) =
         URL.revokeObjectURL(url);
       } else {
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, sheet, 'Attendance');
+        XLSX.utils.book_append_sheet(wb, sheet, sheetName);
         XLSX.writeFile(wb, `${filename}.xlsx`);
       }
       toast.success('Export downloaded');
@@ -74,7 +76,7 @@ export const AttendanceExportButton = ({ filename, getData, disabled }: Props) =
       <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) setPassword(''); }}>
         <DialogContent className="w-[92vw] max-w-sm rounded-lg">
           <DialogHeader>
-            <DialogTitle>Download Attendance</DialogTitle>
+            <DialogTitle>{title}</DialogTitle>
             <DialogDescription>
               Exports only the currently filtered data shown on screen. Confirm your login password to continue.
             </DialogDescription>

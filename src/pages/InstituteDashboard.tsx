@@ -17,6 +17,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { SortableTH, useSort } from '@/components/SortableTable';
 import { AttendanceRangeTable, FeesRangeTable } from '@/components/RangeMatrix';
 import { AttendanceExportButton } from '@/components/AttendanceExport';
+import { FeeGameSummary, FeeTabs, summaryExport } from '@/components/FeeGameSummary';
 
 import {
   fetchInstituteIdSettings, InstituteIdSettings,
@@ -2181,6 +2182,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
   const [filterGame, setFilterGame] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [feeSearch, setFeeSearch] = useState('');
+  const [feeView, setFeeView] = useState<'table' | 'summary'>('table');
   const [editStudentLocked, setEditStudentLocked] = useState(false);
   const [filterMonth, setFilterMonth] = useState(() => {
     const now = new Date();
@@ -2584,6 +2586,30 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
         )
       ) : (
       <>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <FeeTabs
+          tabs={[{ value: 'all', label: 'All Games' }, ...games.map((g: any) => ({ value: g.id, label: g.name })), { value: 'summary', label: 'Summary' }]}
+          value={feeView === 'summary' ? 'summary' : filterGame}
+          onChange={v => { if (v === 'summary') { setFeeView('summary'); setFilterGame('all'); } else { setFeeView('table'); setFilterGame(v); } }}
+        />
+        <AttendanceExportButton
+          title="Download Fees"
+          sheetName="Fees"
+          filename={`fees-${feeView === 'summary' ? 'summary' : (games.find((g: any) => g.id === filterGame)?.name || 'all-games')}-${filterMonth}`}
+          getData={() => {
+            if (feeView === 'summary') return summaryExport(rows.map((f: any) => ({ game: f._gameName, amount: Number(f.amount) || 0, collected: Number(f.collected_amount) || 0 })));
+            const q = feeSearch.trim().toLowerCase();
+            const list = sortedFees.filter((f: any) => !q || String(f.students?.profiles?.name || '').toLowerCase().includes(q) || String(f.students?.reg_no || '').toLowerCase().includes(q));
+            return {
+              headers: ['S.No', 'Student', 'Reg No', 'Game', 'Monthly Fee (₹)', 'Collected (₹)', 'Balance (₹)', 'Status', 'Mode', 'Note'],
+              rows: list.map((f: any, i: number) => { const a = Number(f.amount) || 0, c = Number(f.collected_amount) || 0; return [i + 1, f.students?.profiles?.name || '', f.students?.reg_no || '', f._gameName || '', a, c, Math.max(0, a - c), f.status || '', f.payment_mode || '', f.notes || '']; }),
+            };
+          }}
+        />
+      </div>
+      {feeView === 'summary' ? (
+        <FeeGameSummary items={rows.map((f: any) => ({ game: f._gameName, amount: Number(f.amount) || 0, collected: Number(f.collected_amount) || 0 }))} />
+      ) : (<>
       <div className="grid sm:grid-cols-3 gap-3">
         <Card><CardContent className="pt-4"><p className="text-sm text-muted-foreground">Total</p><p className="text-xl font-bold">₹{totalAmount.toLocaleString()}</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-sm text-muted-foreground">Collected</p><p className="text-xl font-bold text-success">₹{paidAmount.toLocaleString()}</p></CardContent></Card>
@@ -2658,6 +2684,8 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
           </tbody>
         </table>
       </div>
+      </>
+      )}
       </>
       )}
 
