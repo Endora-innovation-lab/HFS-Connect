@@ -22,6 +22,7 @@ import TeacherProfile from '@/components/profiles/TeacherProfile';
 import StudentProfile from '@/components/profiles/StudentProfile';
 import { AttendanceRangeTable, FeesRangeTable } from '@/components/RangeMatrix';
 import { AttendanceExportButton } from '@/components/AttendanceExport';
+import { FeeGameSummary, FeeTabs, summaryExport } from '@/components/FeeGameSummary';
 import { SortableTH, useSort } from '@/components/SortableTable';
 
 const PrincipalDashboard = () => {
@@ -1069,6 +1070,7 @@ const FeesTab = ({ instituteId, userId }: { instituteId: string; userId: string 
   const [dirty, setDirty] = useState<Record<string, boolean>>({});
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [gameTab, setGameTab] = useState('all');
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -1170,7 +1172,9 @@ const FeesTab = ({ instituteId, userId }: { instituteId: string; userId: string 
     return col === 0 ? 'unpaid' : col >= amt ? 'paid' : 'partial';
   };
 
+  const gameNames = Array.from(new Set(rows.map(r => r.game_name).filter(Boolean))).sort();
   const filtered = rows.filter(r => {
+    if (gameTab !== 'all' && gameTab !== 'summary' && r.game_name !== gameTab) return false;
     if (statusFilter !== 'all' && rowStatus(r) !== statusFilter) return false;
     if (!search) return true;
     const q = search.toLowerCase();
@@ -1331,6 +1335,27 @@ const FeesTab = ({ instituteId, userId }: { instituteId: string; userId: string 
         )
       ) : (
       <>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <FeeTabs
+          tabs={[{ value: 'all', label: 'All Games' }, ...gameNames.map(g => ({ value: g, label: g })), { value: 'summary', label: 'Summary' }]}
+          value={gameTab}
+          onChange={setGameTab}
+        />
+        <AttendanceExportButton
+          title="Download Fees"
+          sheetName="Fees"
+          filename={`fees-${gameTab === 'all' ? 'all-games' : gameTab}-${month}`}
+          getData={() => gameTab === 'summary'
+            ? summaryExport(filtered.map(r => ({ game: r.game_name, amount: Number(r.monthly_fee) || 0, collected: Number(r.collected) || 0 })))
+            : {
+              headers: ['S.No', 'Name', 'Reg No', 'Game', 'Monthly Fee (₹)', 'Collected (₹)', 'Balance (₹)', 'Status', 'Mode', 'Note'],
+              rows: filtered.map((r, i) => { const a = Number(r.monthly_fee) || 0, c = Number(r.collected) || 0; return [i + 1, r.name, r.reg_no || '', r.game_name, a, c, Math.max(0, a - c), rowStatus(r), r.mode || '', r.notes || '']; }),
+            }}
+        />
+      </div>
+      {gameTab === 'summary' ? (
+        <FeeGameSummary items={filtered.map(r => ({ game: r.game_name, amount: Number(r.monthly_fee) || 0, collected: Number(r.collected) || 0 }))} />
+      ) : (<>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Paid</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-success">{totals.paid}</div></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Partial</CardTitle></CardHeader><CardContent><div className="text-xl font-bold text-warning">{totals.partial}</div></CardContent></Card>
