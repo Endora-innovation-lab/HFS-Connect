@@ -1459,6 +1459,7 @@ const FeesTab = ({ instituteId, userId }: { instituteId: string; userId: string 
       )}
       </>
       )}
+      </>
     </div>
   );
 };
