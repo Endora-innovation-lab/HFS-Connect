@@ -98,18 +98,22 @@ export const AttendanceExportButton = ({ filename, getData, disabled, title = 'D
                 >CSV</Button>
               </div>
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="export-password">Password</Label>
-              <Input
-                id="export-password"
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                onKeyDown={e => { if (e.key === 'Enter' && !busy) runExport(); }}
-                placeholder="Enter your login password"
-              />
-            </div>
+            <form
+              autoComplete="off"
+              onSubmit={e => { e.preventDefault(); if (!busy) runExport(); }}
+            >
+              <div className="space-y-1.5">
+                <Label htmlFor="export-password">Password</Label>
+                <Input
+                  id="export-password"
+                  type="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="Enter your login password"
+                />
+              </div>
+            </form>
           </div>
 
           <DialogFooter className="flex-col-reverse gap-2 sm:flex-row">
