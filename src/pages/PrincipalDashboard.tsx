@@ -312,7 +312,7 @@ const StudentsTab = ({ instituteId }: { instituteId: string }) => {
         <div className="flex gap-2 flex-wrap">
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input className="pl-8 w-56" placeholder="Search name / reg no" value={search} onChange={e => setSearch(e.target.value)} />
+            <Input className="pl-8 w-56" placeholder="Search name / reg no" autoComplete="off" value={search} onChange={e => setSearch(e.target.value)} />
           </div>
           <Popover open={filterOpen} onOpenChange={setFilterOpen}>
             <PopoverTrigger asChild>
@@ -457,7 +457,7 @@ const TeachersTab = ({ instituteId, principalTeacherId }: { instituteId: string;
         <div className="flex gap-2 flex-wrap">
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input className="pl-8 w-56" placeholder="Search name / id" value={search} onChange={e => setSearch(e.target.value)} />
+            <Input className="pl-8 w-56" placeholder="Search name / id" autoComplete="off" value={search} onChange={e => setSearch(e.target.value)} />
           </div>
         </div>
       </div>
@@ -720,7 +720,7 @@ const StudentAttendancePanel = ({ instituteId, userId }: { instituteId: string; 
             {students.length > 0 && (
               <div className="relative">
                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input className="pl-8 w-48" placeholder="Search student..." value={search} onChange={e => setSearch(e.target.value)} />
+                <Input className="pl-8 w-48" placeholder="Search student..." autoComplete="off" value={search} onChange={e => setSearch(e.target.value)} />
               </div>
             )}
           </>
@@ -1308,7 +1308,7 @@ const FeesTab = ({ instituteId, userId }: { instituteId: string; userId: string 
               </Select>
               <div className="relative">
                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input className="pl-8 w-56" placeholder="Search student..." value={search} onChange={e => setSearch(e.target.value)} />
+                <Input className="pl-8 w-56" placeholder="Search student..." autoComplete="off" value={search} onChange={e => setSearch(e.target.value)} />
               </div>
             </>
           ) : (

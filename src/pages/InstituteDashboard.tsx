@@ -632,7 +632,7 @@ const StudentsTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatc
           </Select>
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input className="pl-8 w-48" placeholder="Search name or reg no..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            <Input className="pl-8 w-48" placeholder="Search name or reg no..." autoComplete="off" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
           </div>
           <Dialog open={showAdd} onOpenChange={setShowAdd}>
             <DialogTrigger asChild>
@@ -1083,7 +1083,7 @@ const TeachersTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatc
         <div className="flex flex-wrap gap-2">
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input className="pl-8 w-48" placeholder="Search name or email..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            <Input className="pl-8 w-48" placeholder="Search name or email..." autoComplete="off" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
           </div>
           <Dialog open={showAdd} onOpenChange={setShowAdd}>
             <DialogTrigger asChild>
@@ -2567,7 +2567,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
               </SelectContent>
             </Select>
           )}
-          <Input placeholder="Search name / reg no" value={feeSearch} onChange={e => setFeeSearch(e.target.value)} className="w-56" />
+          <Input placeholder="Search name / reg no" autoComplete="off" value={feeSearch} onChange={e => setFeeSearch(e.target.value)} className="w-56" />
         </div>
       </div>
 
