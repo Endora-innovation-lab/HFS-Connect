@@ -38,6 +38,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   userLabel,
   userRoleLabel,
   headerLogoutIcon,
+  headerSearch,
 }) => {
   const { signOut } = useAuth();
   const navigate = useNavigate();
@@ -81,6 +82,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 </div>
               </div>
               <div className="flex items-center gap-2">
+                {headerSearch}
                 <Button variant="outline" size="sm" asChild>
                   <a href="https://forms.gle/3PsfR181KFEMnXkB7" target="_blank" rel="noopener noreferrer">
                     <MessageSquare className="h-4 w-4 sm:mr-1" />
