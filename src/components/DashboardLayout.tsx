@@ -26,6 +26,7 @@ interface DashboardLayoutProps {
   userLabel?: string;
   userRoleLabel?: string;
   headerLogoutIcon?: boolean;
+  headerSearch?: React.ReactNode;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
