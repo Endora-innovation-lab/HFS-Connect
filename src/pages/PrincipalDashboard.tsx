@@ -24,12 +24,19 @@ import { AttendanceRangeTable, FeesRangeTable } from '@/components/RangeMatrix';
 import { AttendanceExportButton } from '@/components/AttendanceExport';
 import { FeeGameSummary, FeeTabs, summaryExport } from '@/components/FeeGameSummary';
 import { SortableTH, useSort } from '@/components/SortableTable';
+import MasterSearch, { MasterNavigateTarget } from '@/components/MasterSearch';
 
 const PrincipalDashboard = () => {
   const { user, instituteId, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   const [teacherRecord, setTeacherRecord] = useState<any>(null);
   const [checked, setChecked] = useState(false);
+  const [focus, setFocus] = useState<{ id: string; label: string } | null>(null);
+
+  const handleMasterNavigate = (t: MasterNavigateTarget) => {
+    setActiveTab(t.tab);
+    setFocus({ id: t.id, label: (t.name || t.regNo || '').trim() });
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -66,13 +73,16 @@ const PrincipalDashboard = () => {
       title="Principal Dashboard"
       tabs={tabs}
       activeTab={activeTab}
-      onTabChange={setActiveTab}
+      onTabChange={(t) => { setFocus(null); setActiveTab(t); }}
       userRoleLabel="Principal"
       headerLogoutIcon
+      headerSearch={
+        <MasterSearch instituteId={instituteId} readOnly showBatches={false} onNavigate={handleMasterNavigate} />
+      }
     >
       {activeTab === 'overview' && <OverviewTab instituteId={instituteId} principalTeacherId={principalTeacherId} />}
-      {activeTab === 'students' && <StudentsTab instituteId={instituteId} />}
-      {activeTab === 'teachers' && <TeachersTab instituteId={instituteId} principalTeacherId={principalTeacherId} />}
+      {activeTab === 'students' && <StudentsTab instituteId={instituteId} focus={focus} />}
+      {activeTab === 'teachers' && <TeachersTab instituteId={instituteId} principalTeacherId={principalTeacherId} focus={focus} />}
       {activeTab === 'attendance' && <AttendanceTab instituteId={instituteId} userId={user.id} principalTeacherId={principalTeacherId} />}
       {activeTab === 'fees' && <FeesTab instituteId={instituteId} userId={user.id} />}
       {activeTab === 'profile' && teacherRecord && <TeacherProfile teacherId={teacherRecord.id} hideAssignments />}
@@ -235,13 +245,14 @@ const OverviewTab = ({ instituteId, principalTeacherId }: { instituteId: string;
 };
 
 // ============= STUDENTS =============
-const StudentsTab = ({ instituteId }: { instituteId: string }) => {
+const StudentsTab = ({ instituteId, focus }: { instituteId: string; focus?: { id: string; label: string } | null }) => {
   const [rows, setRows] = useState<any[]>([]);
   const [studentGames, setStudentGames] = useState<Record<string, string[]>>({});
   const [studentBatches, setStudentBatches] = useState<Record<string, string[]>>({});
   const [gamesList, setGamesList] = useState<{ id: string; name: string }[]>([]);
   const [batchesList, setBatchesList] = useState<{ id: string; name: string }[]>([]);
   const [search, setSearch] = useState('');
+  useEffect(() => { if (focus?.label) setSearch(focus.label); }, [focus]);
   const [statusFilter, setStatusFilter] = useState('all');
   const [gameFilter, setGameFilter] = useState('all');
   const [batchFilter, setBatchFilter] = useState('all');
@@ -421,10 +432,11 @@ const StudentsTab = ({ instituteId }: { instituteId: string }) => {
 };
 
 // ============= TEACHERS =============
-const TeachersTab = ({ instituteId, principalTeacherId }: { instituteId: string; principalTeacherId: string }) => {
+const TeachersTab = ({ instituteId, principalTeacherId, focus }: { instituteId: string; principalTeacherId: string; focus?: { id: string; label: string } | null }) => {
   const [rows, setRows] = useState<any[]>([]);
   const [search, setSearch] = useState('');
   const [openId, setOpenId] = useState<string | null>(null);
+  useEffect(() => { if (focus?.label) setSearch(focus.label); }, [focus]);
 
   useEffect(() => {
     (async () => {

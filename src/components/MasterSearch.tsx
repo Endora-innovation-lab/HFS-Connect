@@ -32,11 +32,13 @@ export interface MasterNavigateTarget {
   tab: 'students' | 'teachers' | 'batches';
   id: string;
   name: string;
+  regNo?: string;
 }
 
 interface MasterSearchProps {
   instituteId: string | null;
   readOnly?: boolean;
+  showBatches?: boolean;
   onNavigate: (target: MasterNavigateTarget) => void;
 }
 
@@ -49,7 +51,7 @@ type Entry = MasterResult & {
 
 const norm = (s?: string | null) => (s || '').toString().toLowerCase().trim();
 
-export default function MasterSearch({ instituteId, readOnly, onNavigate }: MasterSearchProps) {
+export default function MasterSearch({ instituteId, readOnly, showBatches = true, onNavigate }: MasterSearchProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [entries, setEntries] = useState<Entry[]>([]);
@@ -227,7 +229,12 @@ export default function MasterSearch({ instituteId, readOnly, onNavigate }: Mast
   const handleNavigate = (e: Entry) => {
     setOpen(false);
     setSelected(null);
-    onNavigate({ tab: e.type === 'student' ? 'students' : e.type === 'teacher' ? 'teachers' : 'batches', id: e.id, name: e.name });
+    onNavigate({
+      tab: e.type === 'student' ? 'students' : e.type === 'teacher' ? 'teachers' : 'batches',
+      id: e.id,
+      name: e.name,
+      regNo: e.regNo,
+    });
   };
 
   const onInputKeyDown = (e: React.KeyboardEvent) => {
@@ -399,7 +406,7 @@ export default function MasterSearch({ instituteId, readOnly, onNavigate }: Mast
                   <>
                     {renderGroup('Students', groups.students, <User className="h-4 w-4" />, studentStart)}
                     {renderGroup('Teachers', groups.teachers, <GraduationCap className="h-4 w-4" />, teacherStart)}
-                    {renderGroup('Batches', groups.batches, <Layers className="h-4 w-4" />, batchStart)}
+                    {showBatches && renderGroup('Batches', groups.batches, <Layers className="h-4 w-4" />, batchStart)}
                   </>
                 )}
               </div>
