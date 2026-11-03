@@ -1436,8 +1436,10 @@ const GamesTab = ({ instituteId }: { instituteId: string }) => {
 };
 
 // ============= BATCHES TAB =============
-const BatchesTab = ({ instituteId }: { instituteId: string }) => {
+const BatchesTab = ({ instituteId, focus }: { instituteId: string; focus?: { id: string; label: string } | null }) => {
   const [batches, setBatches] = useState<any[]>([]);
+  const [batchSearch, setBatchSearch] = useState('');
+  useEffect(() => { if (focus?.label) setBatchSearch(focus.label); }, [focus]);
   const [teachers, setTeachers] = useState<any[]>([]);
   const [students, setStudents] = useState<any[]>([]);
   const [games, setGames] = useState<any[]>([]);
