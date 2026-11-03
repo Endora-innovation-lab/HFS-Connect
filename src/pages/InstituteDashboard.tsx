@@ -18,6 +18,7 @@ import { SortableTH, useSort } from '@/components/SortableTable';
 import { AttendanceRangeTable, FeesRangeTable } from '@/components/RangeMatrix';
 import { AttendanceExportButton } from '@/components/AttendanceExport';
 import { FeeGameSummary, FeeTabs, summaryExport } from '@/components/FeeGameSummary';
+import MasterSearch, { MasterNavigateTarget } from '@/components/MasterSearch';
 
 import {
   fetchInstituteIdSettings, InstituteIdSettings,
@@ -31,6 +32,12 @@ const InstituteDashboard = () => {
   const { user, instituteId, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   const [hasBatches, setHasBatches] = useState<boolean | null>(null);
+  const [focus, setFocus] = useState<{ id: string; label: string } | null>(null);
+
+  const handleMasterNavigate = (t: MasterNavigateTarget) => {
+    setActiveTab(t.tab);
+    setFocus({ id: t.id, label: (t.name || t.regNo || '').trim() });
+  };
 
   useEffect(() => {
     if (!instituteId) return;
@@ -61,12 +68,18 @@ const InstituteDashboard = () => {
   }
 
   return (
-    <DashboardLayout title="Institute Dashboard" tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab}>
+    <DashboardLayout
+      title="Institute Dashboard"
+      tabs={tabs}
+      activeTab={activeTab}
+      onTabChange={(t) => { setFocus(null); setActiveTab(t); }}
+      headerSearch={<MasterSearch instituteId={instituteId} onNavigate={handleMasterNavigate} />}
+    >
       {activeTab === 'overview' && <OverviewTab instituteId={instituteId} />}
       {activeTab === 'games' && <GamesTab instituteId={instituteId} />}
-      {activeTab === 'batches' && <BatchesTab instituteId={instituteId} />}
-      {activeTab === 'students' && <StudentsTab instituteId={instituteId} hasBatches={hasBatches} />}
-      {activeTab === 'teachers' && <TeachersTab instituteId={instituteId} hasBatches={hasBatches} />}
+      {activeTab === 'batches' && <BatchesTab instituteId={instituteId} focus={focus} />}
+      {activeTab === 'students' && <StudentsTab instituteId={instituteId} hasBatches={hasBatches} focus={focus} />}
+      {activeTab === 'teachers' && <TeachersTab instituteId={instituteId} hasBatches={hasBatches} focus={focus} />}
       {activeTab === 'attendance' && <AttendanceTab instituteId={instituteId} />}
       {activeTab === 'fees' && <FeesTab instituteId={instituteId} />}
       {activeTab === 'profile' && <InstituteProfile instituteId={instituteId} />}
@@ -339,7 +352,7 @@ const OverviewTab = ({ instituteId }: { instituteId: string }) => {
 };
 
 // ============= STUDENTS TAB =============
-const StudentsTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatches: boolean | null }) => {
+const StudentsTab = ({ instituteId, hasBatches, focus }: { instituteId: string; hasBatches: boolean | null; focus?: { id: string; label: string } | null }) => {
   const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
@@ -352,6 +365,7 @@ const StudentsTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatc
   const [studentGames, setStudentGames] = useState<any[]>([]); // all rows for institute
   const [filterBatch, setFilterBatch] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  useEffect(() => { if (focus?.label) setSearchTerm(focus.label); }, [focus]);
 
   const [name, setName] = useState('');
   const [regNo, setRegNo] = useState('');
@@ -909,13 +923,14 @@ const StudentsTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatc
 };
 
 // ============= TEACHERS TAB =============
-const TeachersTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatches: boolean | null }) => {
+const TeachersTab = ({ instituteId, hasBatches, focus }: { instituteId: string; hasBatches: boolean | null; focus?: { id: string; label: string } | null }) => {
   const [teachers, setTeachers] = useState<any[]>([]);
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editTeacher, setEditTeacher] = useState<any>(null);
   const [createdCreds, setCreatedCreds] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  useEffect(() => { if (focus?.label) setSearchTerm(focus.label); }, [focus]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -956,7 +971,7 @@ const TeachersTab = ({ instituteId, hasBatches }: { instituteId: string; hasBatc
         const tName = (t.profiles as any)?.name?.toLowerCase() || '';
         const tEmail = (t.profiles as any)?.email?.toLowerCase() || '';
         const term = searchTerm.toLowerCase();
-        return tName.includes(term) || tEmail.includes(term);
+        return tName.includes(term) || tEmail.includes(term) || (t.teacher_id || '').toLowerCase().includes(term);
       })
     : teachers;
 
@@ -1634,8 +1649,12 @@ const BatchesTab = ({ instituteId }: { instituteId: string }) => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
         <h2 className="text-xl font-bold flex items-center gap-2"><Layers className="h-5 w-5" /> Batches</h2>
+        <div className="relative">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input className="pl-8 w-48" placeholder="Search batch name..." autoComplete="off" value={batchSearch} onChange={e => setBatchSearch(e.target.value)} />
+        </div>
         <Dialog open={showAdd} onOpenChange={setShowAdd}>
           <DialogTrigger asChild>
             <Button size="sm"><Plus className="h-4 w-4 mr-1" /> Create Batch</Button>
@@ -1681,7 +1700,7 @@ const BatchesTab = ({ instituteId }: { instituteId: string }) => {
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
-        {batches.map(b => (
+        {(batchSearch.trim() ? batches.filter(b => (b.name || '').toLowerCase().includes(batchSearch.trim().toLowerCase())) : batches).map(b => (
           <Card key={b.id}>
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
