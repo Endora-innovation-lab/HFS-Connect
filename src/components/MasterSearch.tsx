@@ -32,11 +32,13 @@ export interface MasterNavigateTarget {
   tab: 'students' | 'teachers' | 'batches';
   id: string;
   name: string;
+  regNo?: string;
 }
 
 interface MasterSearchProps {
   instituteId: string | null;
   readOnly?: boolean;
+  showBatches?: boolean;
   onNavigate: (target: MasterNavigateTarget) => void;
 }
 
@@ -49,7 +51,7 @@ type Entry = MasterResult & {
 
 const norm = (s?: string | null) => (s || '').toString().toLowerCase().trim();
 
-export default function MasterSearch({ instituteId, readOnly, onNavigate }: MasterSearchProps) {
+export default function MasterSearch({ instituteId, readOnly, showBatches = true, onNavigate }: MasterSearchProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [entries, setEntries] = useState<Entry[]>([]);
