@@ -229,7 +229,12 @@ export default function MasterSearch({ instituteId, readOnly, showBatches = true
   const handleNavigate = (e: Entry) => {
     setOpen(false);
     setSelected(null);
-    onNavigate({ tab: e.type === 'student' ? 'students' : e.type === 'teacher' ? 'teachers' : 'batches', id: e.id, name: e.name });
+    onNavigate({
+      tab: e.type === 'student' ? 'students' : e.type === 'teacher' ? 'teachers' : 'batches',
+      id: e.id,
+      name: e.name,
+      regNo: e.regNo,
+    });
   };
 
   const onInputKeyDown = (e: React.KeyboardEvent) => {
@@ -401,7 +406,7 @@ export default function MasterSearch({ instituteId, readOnly, showBatches = true
                   <>
                     {renderGroup('Students', groups.students, <User className="h-4 w-4" />, studentStart)}
                     {renderGroup('Teachers', groups.teachers, <GraduationCap className="h-4 w-4" />, teacherStart)}
-                    {renderGroup('Batches', groups.batches, <Layers className="h-4 w-4" />, batchStart)}
+                    {showBatches && renderGroup('Batches', groups.batches, <Layers className="h-4 w-4" />, batchStart)}
                   </>
                 )}
               </div>
