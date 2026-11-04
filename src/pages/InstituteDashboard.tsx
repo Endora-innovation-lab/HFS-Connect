@@ -1439,6 +1439,7 @@ const GamesTab = ({ instituteId }: { instituteId: string }) => {
 const BatchesTab = ({ instituteId, focus }: { instituteId: string; focus?: { id: string; label: string } | null }) => {
   const [batches, setBatches] = useState<any[]>([]);
   const [batchSearch, setBatchSearch] = useState('');
+  const [gameFilter, setGameFilter] = useState('all');
   useEffect(() => { if (focus?.label) setBatchSearch(focus.label); }, [focus]);
   const [teachers, setTeachers] = useState<any[]>([]);
   const [students, setStudents] = useState<any[]>([]);
@@ -1653,9 +1654,18 @@ const BatchesTab = ({ instituteId, focus }: { instituteId: string; focus?: { id:
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <h2 className="text-xl font-bold flex items-center gap-2"><Layers className="h-5 w-5" /> Batches</h2>
-        <div className="relative">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input className="pl-8 w-48" placeholder="Search batch name..." autoComplete="off" value={batchSearch} onChange={e => setBatchSearch(e.target.value)} />
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input className="pl-8 w-48" placeholder="Search batch name..." autoComplete="off" value={batchSearch} onChange={e => setBatchSearch(e.target.value)} />
+          </div>
+          <Select value={gameFilter} onValueChange={setGameFilter}>
+            <SelectTrigger className="w-44"><SelectValue placeholder="All Games" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Games</SelectItem>
+              {games.map(g => <SelectItem key={g.id} value={g.id}>{g.name}</SelectItem>)}
+            </SelectContent>
+          </Select>
         </div>
         <Dialog open={showAdd} onOpenChange={setShowAdd}>
           <DialogTrigger asChild>
@@ -1702,7 +1712,7 @@ const BatchesTab = ({ instituteId, focus }: { instituteId: string; focus?: { id:
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
-        {(batchSearch.trim() ? batches.filter(b => (b.name || '').toLowerCase().includes(batchSearch.trim().toLowerCase())) : batches).map(b => (
+        {batches.filter(b => (gameFilter === 'all' || b.game_id === gameFilter) && (!batchSearch.trim() || (b.name || '').toLowerCase().includes(batchSearch.trim().toLowerCase()))).map(b => (
           <Card key={b.id}>
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
