@@ -29,6 +29,7 @@ const TeacherDashboard = () => {
     fetch();
   }, [user]);
 
+  const [attView, setAttView] = useState<'students' | 'self'>('students');
   const tabs = [
     { label: 'Overview', value: 'overview', icon: LayoutDashboard },
     { label: 'Mark Attendance', value: 'attendance', icon: ClipboardList },
