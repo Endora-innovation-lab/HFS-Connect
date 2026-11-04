@@ -29,6 +29,7 @@ const TeacherDashboard = () => {
     fetch();
   }, [user]);
 
+  const [attView, setAttView] = useState<'students' | 'self'>('students');
   const tabs = [
     { label: 'Overview', value: 'overview', icon: LayoutDashboard },
     { label: 'Mark Attendance', value: 'attendance', icon: ClipboardList },
@@ -52,9 +53,22 @@ const TeacherDashboard = () => {
     <DashboardLayout title="Teacher Dashboard" tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab}>
       {activeTab === 'overview' && teacherRecord && <OverviewTab teacherId={teacherRecord.id} instituteId={instituteId} />}
       {activeTab === 'attendance' && teacherRecord && (
-        <div className="space-y-8">
-          <MyAttendanceTab teacherId={teacherRecord.id} instituteId={instituteId} userId={user.id} />
-          <MarkAttendanceTab teacherId={teacherRecord.id} instituteId={instituteId} userId={user.id} />
+        <div className="space-y-6">
+          <div className="inline-flex rounded-lg border border-border bg-muted p-1">
+            {([['students', 'Students Attendance'], ['self', 'My Attendance']] as const).map(([v, l]) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => setAttView(v)}
+                className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${attView === v ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+          {attView === 'self'
+            ? <MyAttendanceTab teacherId={teacherRecord.id} instituteId={instituteId} userId={user.id} />
+            : <MarkAttendanceTab teacherId={teacherRecord.id} instituteId={instituteId} userId={user.id} />}
         </div>
       )}
       {activeTab === 'fees' && teacherRecord && <UpdateFeesTab teacherId={teacherRecord.id} instituteId={instituteId} userId={user.id} />}
