@@ -2636,6 +2636,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
           <FeesRangeTable
             instituteId={instituteId}
             gameId={filterGame}
+            batchId={filterBatch}
             from={appliedMonths.from}
             to={appliedMonths.to}
           />

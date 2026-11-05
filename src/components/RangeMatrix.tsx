@@ -284,8 +284,8 @@ export const AttendanceRangeTable = ({
 
 // ============ FEES RANGE ============
 export const FeesRangeTable = ({
-  instituteId, gameId, from, to,
-}: { instituteId: string; gameId: string; from: string; to: string }) => {
+  instituteId, gameId, batchId = 'all', from, to,
+}: { instituteId: string; gameId: string; batchId?: string; from: string; to: string }) => {
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const months = useMemo(() => enumerateMonths(from, to), [from, to]);
