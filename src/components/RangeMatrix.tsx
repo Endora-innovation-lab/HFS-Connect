@@ -284,8 +284,8 @@ export const AttendanceRangeTable = ({
 
 // ============ FEES RANGE ============
 export const FeesRangeTable = ({
-  instituteId, gameId, from, to,
-}: { instituteId: string; gameId: string; from: string; to: string }) => {
+  instituteId, gameId, batchId = 'all', from, to,
+}: { instituteId: string; gameId: string; batchId?: string; from: string; to: string }) => {
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const months = useMemo(() => enumerateMonths(from, to), [from, to]);
@@ -294,16 +294,19 @@ export const FeesRangeTable = ({
     let cancelled = false;
     const load = async () => {
       setLoading(true);
-      const [gRes, sgRes, stuRes, feeRes] = await Promise.all([
+      const [gRes, sgRes, stuRes, feeRes, bsRes] = await Promise.all([
         supabase.from('games').select('id, name').eq('institute_id', instituteId),
         supabase.from('student_games').select('*').eq('institute_id', instituteId),
         supabase.from('students').select('id, reg_no, status, profiles!students_user_id_profiles_fkey(name)').eq('institute_id', instituteId),
         supabase.from('fees').select('*').eq('institute_id', instituteId).gte('month', from).lte('month', to).limit(5000),
+        batchId === 'all' ? Promise.resolve({ data: [] }) : supabase.from('batch_students').select('batch_id, student_id').eq('batch_id', batchId),
       ]);
       if (cancelled) return;
       const gameMap = Object.fromEntries((gRes.data || []).map((g: any) => [g.id, g.name]));
       const studentMap = Object.fromEntries((stuRes.data || []).map((s: any) => [s.id, s]));
-      const fees = (feeRes.data || []).filter((f: any) => gameId === 'all' || f.game_id === gameId);
+      const batchStudentIds = new Set((bsRes.data || []).map((bs: any) => bs.student_id));
+      const inBatch = (sid: string) => batchId === 'all' || batchStudentIds.has(sid);
+      const fees = (feeRes.data || []).filter((f: any) => (gameId === 'all' || f.game_id === gameId) && inBatch(f.student_id));
 
       const map = new Map<string, { name: string; reg: string; game: string; cells: Record<string, any> }>();
       const ensure = (sid: string, gid: string | null) => {
@@ -323,6 +326,7 @@ export const FeesRangeTable = ({
       (sgRes.data || [])
         .filter((sg: any) => sg.status === 'active'
           && (gameId === 'all' || sg.game_id === gameId)
+          && inBatch(sg.student_id)
           && studentMap[sg.student_id]
           && studentMap[sg.student_id].status !== 'inactive')
         .forEach((sg: any) => ensure(sg.student_id, sg.game_id));
@@ -348,7 +352,7 @@ export const FeesRangeTable = ({
     };
     load();
     return () => { cancelled = true; };
-  }, [instituteId, gameId, from, to]);
+  }, [instituteId, gameId, batchId, from, to]);
 
   const feeCls = (s: string) => s === 'paid' ? 'bg-success/10 text-success'
     : s === 'partial' ? 'bg-warning/10 text-warning'

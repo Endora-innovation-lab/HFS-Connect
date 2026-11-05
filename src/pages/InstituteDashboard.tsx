@@ -2210,6 +2210,9 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
   const [students, setStudents] = useState<any[]>([]);
   const [games, setGames] = useState<any[]>([]);
   const [studentGames, setStudentGames] = useState<any[]>([]);
+  const [batches, setBatches] = useState<any[]>([]);
+  const [batchStudents, setBatchStudents] = useState<any[]>([]);
+  const [filterBatch, setFilterBatch] = useState('all');
   const [filterGame, setFilterGame] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [feeSearch, setFeeSearch] = useState('');
@@ -2250,14 +2253,19 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
   const [historyRows, setHistoryRows] = useState<any[]>([]);
 
   const fetchAll = async () => {
-    const [gRes, sgRes, stuRes] = await Promise.all([
+    const [gRes, sgRes, stuRes, bRes, bsRes] = await Promise.all([
       supabase.from('games').select('*').eq('institute_id', instituteId).order('name'),
       supabase.from('student_games').select('*').eq('institute_id', instituteId),
       supabase.from('students').select('id, reg_no, status, profiles!students_user_id_profiles_fkey(name)').eq('institute_id', instituteId),
+      supabase.from('batches').select('id, name, game_id').eq('institute_id', instituteId).order('name'),
+      supabase.from('batch_students').select('batch_id, student_id'),
     ]);
     setGames(gRes.data || []);
     setStudentGames(sgRes.data || []);
     setStudents(stuRes.data || []);
+    const instBatchIds = new Set((bRes.data || []).map((b: any) => b.id));
+    setBatches(bRes.data || []);
+    setBatchStudents((bsRes.data || []).filter((bs: any) => instBatchIds.has(bs.batch_id)));
   };
 
   const fetchFees = async () => {
@@ -2279,10 +2287,14 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
     feeRows.forEach((f: any) => { feeByKey[feeKey(f.student_id, f.game_id)] = f; });
 
     // Generate placeholders from active student_games matching filterGame
+    const feeBatchStudentIds = new Set(
+      filterBatch === 'all' ? [] : batchStudents.filter(bs => bs.batch_id === filterBatch).map(bs => bs.student_id)
+    );
     const activeEnrolls = studentGames.filter(sg =>
       sg.status === 'active' &&
       (filterGame === 'all' || sg.game_id === filterGame) &&
-      studentMap[sg.student_id]?.status !== 'inactive'
+      studentMap[sg.student_id]?.status !== 'inactive' &&
+      (filterBatch === 'all' || feeBatchStudentIds.has(sg.student_id))
     );
 
     const merged: any[] = [];
@@ -2319,6 +2331,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
       if (hasEnrollment) return;
       // Hide fees of inactive students / inactive game enrollments from the operational view
       if (studentMap[f.student_id]?.status === 'inactive') return;
+      if (filterBatch !== 'all' && !feeBatchStudentIds.has(f.student_id)) return;
       if (f.game_id && studentGames.some(sg => sg.student_id === f.student_id && sg.game_id === f.game_id && sg.status !== 'active')) return;
       // Fee row without a game: skip if this student is already listed under their game(s)
       if (!f.game_id && studentsWithGameRows.has(f.student_id)) return;
@@ -2336,7 +2349,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
   };
 
   useEffect(() => { fetchAll(); }, [instituteId]);
-  useEffect(() => { fetchFees(); }, [instituteId, filterStatus, filterMonth, filterGame, students, games, studentGames, monthMode]);
+  useEffect(() => { fetchFees(); }, [instituteId, filterStatus, filterMonth, filterGame, filterBatch, students, games, studentGames, batchStudents, monthMode]);
 
   const totalAmount = rows.reduce((sum, f) => sum + (Number(f.amount) || 0), 0);
   const paidAmount = rows.reduce((sum, f) => sum + (Number(f.collected_amount) || 0), 0);
@@ -2549,19 +2562,35 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
     fetchFees();
   };
 
-  const showGameFilter = games.length > 1;
+  // Games with active enrollments among the selected batch's students.
+  const batchStudentIds = new Set(
+    filterBatch === 'all' ? [] : batchStudents.filter(bs => bs.batch_id === filterBatch).map(bs => bs.student_id)
+  );
+  const batchGames = filterBatch === 'all'
+    ? []
+    : games.filter(g => studentGames.some(sg => sg.game_id === g.id && sg.status === 'active' && batchStudentIds.has(sg.student_id)));
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-xl font-bold flex items-center gap-2"><DollarSign className="h-5 w-5" /> Fees</h2>
         <div className="flex flex-wrap gap-2">
-          {showGameFilter && (
+          <Select
+            value={filterBatch}
+            onValueChange={(v: string) => { setFilterBatch(v); setFilterGame('all'); }}
+          >
+            <SelectTrigger className="w-48"><SelectValue placeholder="All Batches" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Batches</SelectItem>
+              {batches.map(b => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
+            </SelectContent>
+          </Select>
+          {filterBatch !== 'all' && batchGames.length > 0 && (
             <Select value={filterGame} onValueChange={setFilterGame}>
               <SelectTrigger className="w-44"><SelectValue placeholder="Filter by game" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Games</SelectItem>
-                {games.map(g => <SelectItem key={g.id} value={g.id}>{g.name}</SelectItem>)}
+                {batchGames.map(g => <SelectItem key={g.id} value={g.id}>{g.name}</SelectItem>)}
               </SelectContent>
             </Select>
           )}
@@ -2607,6 +2636,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
           <FeesRangeTable
             instituteId={instituteId}
             gameId={filterGame}
+            batchId={filterBatch}
             from={appliedMonths.from}
             to={appliedMonths.to}
           />
@@ -2626,7 +2656,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
         <AttendanceExportButton
           title="Download Fees"
           sheetName="Fees"
-          filename={`fees-${feeView === 'summary' ? 'summary' : (games.find((g: any) => g.id === filterGame)?.name || 'all-games')}-${filterMonth}`}
+          filename={`fees-${feeView === 'summary' ? 'summary' : (batches.find((b: any) => b.id === filterBatch)?.name || games.find((g: any) => g.id === filterGame)?.name || 'all')}-${filterMonth}`}
           getData={() => {
             if (feeView === 'summary') return summaryExport(rows.map((f: any) => ({ game: f._gameName, amount: Number(f.amount) || 0, collected: Number(f.collected_amount) || 0 })));
             const q = feeSearch.trim().toLowerCase();
