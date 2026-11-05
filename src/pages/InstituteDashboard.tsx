@@ -2656,7 +2656,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
         <AttendanceExportButton
           title="Download Fees"
           sheetName="Fees"
-          filename={`fees-${feeView === 'summary' ? 'summary' : (games.find((g: any) => g.id === filterGame)?.name || 'all-games')}-${filterMonth}`}
+          filename={`fees-${feeView === 'summary' ? 'summary' : (batches.find((b: any) => b.id === filterBatch)?.name || games.find((g: any) => g.id === filterGame)?.name || 'all')}-${filterMonth}`}
           getData={() => {
             if (feeView === 'summary') return summaryExport(rows.map((f: any) => ({ game: f._gameName, amount: Number(f.amount) || 0, collected: Number(f.collected_amount) || 0 })));
             const q = feeSearch.trim().toLowerCase();
