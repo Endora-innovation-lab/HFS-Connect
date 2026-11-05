@@ -352,7 +352,7 @@ export const FeesRangeTable = ({
     };
     load();
     return () => { cancelled = true; };
-  }, [instituteId, gameId, from, to]);
+  }, [instituteId, gameId, batchId, from, to]);
 
   const feeCls = (s: string) => s === 'paid' ? 'bg-success/10 text-success'
     : s === 'partial' ? 'bg-warning/10 text-warning'
