@@ -2210,6 +2210,9 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
   const [students, setStudents] = useState<any[]>([]);
   const [games, setGames] = useState<any[]>([]);
   const [studentGames, setStudentGames] = useState<any[]>([]);
+  const [batches, setBatches] = useState<any[]>([]);
+  const [batchStudents, setBatchStudents] = useState<any[]>([]);
+  const [filterBatch, setFilterBatch] = useState('all');
   const [filterGame, setFilterGame] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [feeSearch, setFeeSearch] = useState('');
@@ -2250,10 +2253,12 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
   const [historyRows, setHistoryRows] = useState<any[]>([]);
 
   const fetchAll = async () => {
-    const [gRes, sgRes, stuRes] = await Promise.all([
+    const [gRes, sgRes, stuRes, bRes, bsRes] = await Promise.all([
       supabase.from('games').select('*').eq('institute_id', instituteId).order('name'),
       supabase.from('student_games').select('*').eq('institute_id', instituteId),
       supabase.from('students').select('id, reg_no, status, profiles!students_user_id_profiles_fkey(name)').eq('institute_id', instituteId),
+      supabase.from('batches').select('id, name, game_id').eq('institute_id', instituteId).order('name'),
+      supabase.from('batch_students').select('batch_id, student_id'),
     ]);
     setGames(gRes.data || []);
     setStudentGames(sgRes.data || []);
