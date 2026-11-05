@@ -2263,6 +2263,9 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
     setGames(gRes.data || []);
     setStudentGames(sgRes.data || []);
     setStudents(stuRes.data || []);
+    const instBatchIds = new Set((bRes.data || []).map((b: any) => b.id));
+    setBatches(bRes.data || []);
+    setBatchStudents((bsRes.data || []).filter((bs: any) => instBatchIds.has(bs.batch_id)));
   };
 
   const fetchFees = async () => {
