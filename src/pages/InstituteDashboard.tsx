@@ -2287,10 +2287,14 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
     feeRows.forEach((f: any) => { feeByKey[feeKey(f.student_id, f.game_id)] = f; });
 
     // Generate placeholders from active student_games matching filterGame
+    const feeBatchStudentIds = new Set(
+      filterBatch === 'all' ? [] : batchStudents.filter(bs => bs.batch_id === filterBatch).map(bs => bs.student_id)
+    );
     const activeEnrolls = studentGames.filter(sg =>
       sg.status === 'active' &&
       (filterGame === 'all' || sg.game_id === filterGame) &&
-      studentMap[sg.student_id]?.status !== 'inactive'
+      studentMap[sg.student_id]?.status !== 'inactive' &&
+      (filterBatch === 'all' || feeBatchStudentIds.has(sg.student_id))
     );
 
     const merged: any[] = [];
@@ -2327,6 +2331,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
       if (hasEnrollment) return;
       // Hide fees of inactive students / inactive game enrollments from the operational view
       if (studentMap[f.student_id]?.status === 'inactive') return;
+      if (filterBatch !== 'all' && !feeBatchStudentIds.has(f.student_id)) return;
       if (f.game_id && studentGames.some(sg => sg.student_id === f.student_id && sg.game_id === f.game_id && sg.status !== 'active')) return;
       // Fee row without a game: skip if this student is already listed under their game(s)
       if (!f.game_id && studentsWithGameRows.has(f.student_id)) return;
@@ -2344,7 +2349,7 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
   };
 
   useEffect(() => { fetchAll(); }, [instituteId]);
-  useEffect(() => { fetchFees(); }, [instituteId, filterStatus, filterMonth, filterGame, students, games, studentGames, monthMode]);
+  useEffect(() => { fetchFees(); }, [instituteId, filterStatus, filterMonth, filterGame, filterBatch, students, games, studentGames, batchStudents, monthMode]);
 
   const totalAmount = rows.reduce((sum, f) => sum + (Number(f.amount) || 0), 0);
   const paidAmount = rows.reduce((sum, f) => sum + (Number(f.collected_amount) || 0), 0);
