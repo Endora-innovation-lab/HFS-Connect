@@ -2557,19 +2557,35 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
     fetchFees();
   };
 
-  const showGameFilter = games.length > 1;
+  // Games with active enrollments among the selected batch's students.
+  const batchStudentIds = new Set(
+    filterBatch === 'all' ? [] : batchStudents.filter(bs => bs.batch_id === filterBatch).map(bs => bs.student_id)
+  );
+  const batchGames = filterBatch === 'all'
+    ? []
+    : games.filter(g => studentGames.some(sg => sg.game_id === g.id && sg.status === 'active' && batchStudentIds.has(sg.student_id)));
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-xl font-bold flex items-center gap-2"><DollarSign className="h-5 w-5" /> Fees</h2>
         <div className="flex flex-wrap gap-2">
-          {showGameFilter && (
+          <Select
+            value={filterBatch}
+            onValueChange={(v: string) => { setFilterBatch(v); setFilterGame('all'); }}
+          >
+            <SelectTrigger className="w-48"><SelectValue placeholder="All Batches" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Batches</SelectItem>
+              {batches.map(b => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
+            </SelectContent>
+          </Select>
+          {filterBatch !== 'all' && batchGames.length > 0 && (
             <Select value={filterGame} onValueChange={setFilterGame}>
               <SelectTrigger className="w-44"><SelectValue placeholder="Filter by game" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Games</SelectItem>
-                {games.map(g => <SelectItem key={g.id} value={g.id}>{g.name}</SelectItem>)}
+                {batchGames.map(g => <SelectItem key={g.id} value={g.id}>{g.name}</SelectItem>)}
               </SelectContent>
             </Select>
           )}
