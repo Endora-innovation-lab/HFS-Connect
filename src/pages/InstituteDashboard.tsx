@@ -2562,14 +2562,6 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
     fetchFees();
   };
 
-  // Games with active enrollments among the selected batch's students.
-  const batchStudentIds = new Set(
-    filterBatch === 'all' ? [] : batchStudents.filter(bs => bs.batch_id === filterBatch).map(bs => bs.student_id)
-  );
-  const batchGames = filterBatch === 'all'
-    ? []
-    : games.filter(g => studentGames.some(sg => sg.game_id === g.id && sg.status === 'active' && batchStudentIds.has(sg.student_id)));
-
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -2585,15 +2577,6 @@ const FeesTab = ({ instituteId }: { instituteId: string }) => {
               {batches.map(b => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
             </SelectContent>
           </Select>
-          {filterBatch !== 'all' && batchGames.length > 0 && (
-            <Select value={filterGame} onValueChange={setFilterGame}>
-              <SelectTrigger className="w-44"><SelectValue placeholder="Filter by game" /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Games</SelectItem>
-                {batchGames.map(g => <SelectItem key={g.id} value={g.id}>{g.name}</SelectItem>)}
-              </SelectContent>
-            </Select>
-          )}
           <Select value={monthMode} onValueChange={(v: 'single' | 'range') => setMonthMode(v)}>
             <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
             <SelectContent>
